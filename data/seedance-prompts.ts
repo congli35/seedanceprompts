@@ -26,6 +26,11 @@ function getTodayLocalDate() {
 const DEFAULT_CREATED_AT = getTodayLocalDate();
 
 const seedancePromptInputs: SeedancePromptInput[] = [
+    {
+    "source": "X",
+    "sourceUrl": "https://x.com/EHuanglu/status/2020828503810445785",
+    "prompt": "2 women fighting in a high-octane action sequence."
+  },
    {
     "source": "X",
     "sourceUrl": "https://x.com/songguoxiansen/status/2026481512607265116",
@@ -104,11 +109,6 @@ const seedancePromptInputs: SeedancePromptInput[] = [
     "source": "X",
     "sourceUrl": "https://x.com/KingBootoshi/status/2021349878232907790",
     "prompt": "Luffy coding on a Macbook on the Thousand Sunny, RAGING, then throwing it overboard."
-  },
-  {
-    "source": "X",
-    "sourceUrl": "https://x.com/EHuanglu/status/2020828503810445785",
-    "prompt": "2 women fighting in a high-octane action sequence."
   },
   {
     "source": "X",
