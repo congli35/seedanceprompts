@@ -26,11 +26,12 @@ function getTodayLocalDate() {
 const DEFAULT_CREATED_AT = getTodayLocalDate();
 
 const seedancePromptInputs: SeedancePromptInput[] = [
-  {
-    source: "X",
-    sourceUrl: "https://x.com/EHuanglu/status/2025161355171332552",
+   {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2026481512607265116",
+    "prompt": "真人写实风格 ，竖屏，第一人称男友视角。在昏暗的KTV包厢内，背景有紫色和蓝色的霓虹激光灯闪烁。一位漂亮的年轻亚洲女性坐在黑色皮沙发上，黑色长发披肩，身穿黑色露肩亮片毛衣，戴着精致项链。动作描述：她正对着镜头微笑，眼神温柔，身体随着背景音乐轻微晃动，随后她拿起桌上的麦克风准备唱歌。灯光在她的脸上和衣服上留下流动的光影，营造出暧昧且真实的氛围。"
   },
-  {
+   {
     source: "X",
     sourceUrl: "https://x.com/liyue_ai/status/2026132584468709489",
     prompt: `主体：
@@ -39,6 +40,65 @@ const seedancePromptInputs: SeedancePromptInput[] = [
 镜头保持主观视角（POV），她笑着轻轻推了一下镜头，伴随着衣袖摩擦的细微\`沙沙\`声，语气带着半真半假的娇嗔：\`哎呀……别拍我了嘛。\`
 
 随即，她放下了挡在镜头前的手，身体不再后退，反而主动前倾凑近镜头，直到精致的面孔占据了大半个画面。她眼里的笑意加深，直视着镜头，压低声音，语气变得暧昧且充满挑逗：\`别拍了……我们来做点别的事吧？（停顿）毕竟……我是你生成的AI，你想对我干嘛……就可以干嘛呀。\` 说完，她轻轻咬了一下下唇，呼吸声清晰可闻。背景中窗外的城市喧嚣被隔绝，只有室内安静暧昧的空气流动声。`,
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2026269308083634683",
+    "prompt": "60秒仙侠漫剧小短片-男女修者大战魔兽 。场景描述：云雾缭绕的仙山之巅，巨大的魔兽咆哮，男女修者手持仙剑，剑气纵横，动作流畅且具有史诗感。"
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2026287013515980957",
+    "prompt": "16:9横屏 ，第一人称驾驶舱视角，极品飞车游戏风格，夜间霓虹赛道。极品飞车-漂移过弯，仪表盘指针跳动，窗外霓虹灯光飞速掠过。"
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2023011996548186277",
+    "prompt": "真假美猴王-60秒3D动画电影风格 。两个孙悟空在空中激战，金箍棒碰撞产生火花，背景是宏大的天宫场景，画质细腻，动作极具张力。"
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2022651034271982035",
+    "prompt": "时尚变装秀超燃30秒视频 。模特在不同场景间快速切换服装，动作连贯，光影效果极佳，展示了 Seedance 2.0 强大的角色一致性和服装模拟能力。"
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2022497950984016019",
+    "prompt": "春丽大战红风超燃打戏58秒视频 。经典的格斗游戏角色对决，招式还原度高，打击感强，特效华丽。"
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2022926699864969656",
+    "prompt": "Seedance 2.0 提示词技巧实战演示：如何利用顶级 AI 大模型辅助生成高质量视频提示词 。"
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2021572889959682286",
+    "prompt": "一个Skill轻松生成Seedance 2.0专业视频提示词 。展示了如何通过结构化提示词提升视频生成的专业度。"
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2021472050075070568",
+    "prompt": "fast action movie scene, hand-held camera, the woman notices the pilots. 快速动作电影场景 ，手持摄影机拍摄，女性角色注意到飞行员的瞬间。"
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2021471026853576963",
+    "prompt": "More Seedance 2.0 tests. 更多 Seedance 2.0 测试作品展示 ，涵盖不同风格的短片片段。"
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2021471619412263345",
+    "prompt": "A realistic cinematic scene begins in a vast desert, transition to a futuristic city. 真实的电影感场景 ，从广袤的沙漠过渡到未来主义城市。"
+  },
+  {
+    "source": "X",
+    "sourceUrl": "https://x.com/songguoxiansen/status/2021471225563013451",
+    "prompt": "Seedance V2 will open the door for fans worldwide. 展示了 Seedance 2.0 在全球粉丝创作中的潜力 。"
+  },
+  {
+    source: "X",
+    sourceUrl: "https://x.com/EHuanglu/status/2025161355171332552",
   },
   {
     "source": "X",
