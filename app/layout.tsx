@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Chakra_Petch, Unbounded } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -67,7 +68,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${display.variable} ${body.variable}`}>{children}</body>
+      <body className={`${display.variable} ${body.variable}`}>
+        {children}
+      </body>
+      <GoogleAnalytics gaId="G-9NEW3KWV8Q" />
     </html>
   );
 }

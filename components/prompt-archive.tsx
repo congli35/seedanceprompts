@@ -23,6 +23,8 @@ type TwitterWidgetsApi = {
 const sourceFilters: SourceFilter[] = ["All", "X", "Manual"];
 const EMBED_CONSENT_KEY = "seedance_x_embed_consent_v1";
 const TWITTER_WIDGETS_SCRIPT_ID = "twitter-wjs";
+const INITIAL_VISIBLE_PROMPTS = 24;
+const PROMPTS_PER_PAGE = 24;
 
 let twitterWidgetsPromise: Promise<boolean> | null = null;
 
@@ -171,6 +173,43 @@ function XPostEmbed({ sourceUrl }: { sourceUrl: string }) {
   return <div ref={containerRef} className="x-embed-live" />;
 }
 
+function LazyXPostEmbed({ sourceUrl }: { sourceUrl: string }) {
+  const placeholderRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (isVisible || typeof window === "undefined" || !placeholderRef.current) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "260px 0px" },
+    );
+
+    observer.observe(placeholderRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isVisible]);
+
+  if (isVisible) {
+    return <XPostEmbed sourceUrl={sourceUrl} />;
+  }
+
+  return (
+    <div ref={placeholderRef} className="embed-placeholder">
+      <p className="text-sm text-cyan-50/85">Embed will load when this card is in view.</p>
+    </div>
+  );
+}
+
 function formatDate(dateString: string) {
   const date = new Date(dateString);
   return new Intl.DateTimeFormat("en-US", {
@@ -185,12 +224,13 @@ export function PromptArchive() {
   const [sourceFilter, setSourceFilter] = useState<SourceFilter>("All");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [autoDurations, setAutoDurations] = useState<Record<string, string>>({});
+  const [visiblePromptCount, setVisiblePromptCount] = useState(INITIAL_VISIBLE_PROMPTS);
   const [embedConsent, setEmbedConsent] = useState<EmbedConsent>(() => {
     if (typeof window === "undefined") {
-      return null;
+      return "accepted";
     }
     const saved = window.localStorage.getItem(EMBED_CONSENT_KEY);
-    return saved === "accepted" || saved === "rejected" ? saved : null;
+    return saved === "accepted" || saved === "rejected" ? saved : "accepted";
   });
 
   const saveEmbedConsent = (value: Exclude<EmbedConsent, null>) => {
@@ -226,6 +266,12 @@ export function PromptArchive() {
       return matchesQuery && matchesSource;
     });
   }, [query, sourceFilter]);
+
+  const visiblePrompts = useMemo(
+    () => filteredPrompts.slice(0, visiblePromptCount),
+    [filteredPrompts, visiblePromptCount],
+  );
+  const hasMorePrompts = visiblePromptCount < filteredPrompts.length;
 
   const xCount = seedancePrompts.filter((entry) => entry.source === "X").length;
 
@@ -303,7 +349,10 @@ export function PromptArchive() {
               <input
                 type="search"
                 value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setVisiblePromptCount(INITIAL_VISIBLE_PROMPTS);
+                }}
                 placeholder="Search by scene, style, or mood..."
                 className="input-field w-full rounded-2xl border border-white/25 px-4 py-3 text-sm text-white outline-none"
               />
@@ -317,7 +366,10 @@ export function PromptArchive() {
                     key={filter}
                     type="button"
                     className={`chip ${isActive ? "chip-active" : ""}`}
-                    onClick={() => setSourceFilter(filter)}
+                    onClick={() => {
+                      setSourceFilter(filter);
+                      setVisiblePromptCount(INITIAL_VISIBLE_PROMPTS);
+                    }}
                   >
                     {filter}
                   </button>
@@ -328,7 +380,7 @@ export function PromptArchive() {
         </section>
 
         <section className="grid gap-4 pb-8 md:grid-cols-2">
-          {filteredPrompts.map((entry, index) => {
+          {visiblePrompts.map((entry, index) => {
             const durationLabel = autoDurations[entry.id] ?? entry.duration ?? "Unknown";
             const promptText = entry.prompt?.trim() ?? "";
             const hasPrompt = promptText.length > 0;
@@ -374,7 +426,7 @@ export function PromptArchive() {
                   </div>
                 ) : canLoadXEmbeds ? (
                   <div className="x-embed-frame mb-4">
-                    <XPostEmbed sourceUrl={entry.sourceUrl} />
+                    <LazyXPostEmbed sourceUrl={entry.sourceUrl} />
                   </div>
                 ) : (
                   <div className="x-embed-frame mb-4">
@@ -420,6 +472,25 @@ export function PromptArchive() {
             );
           })}
         </section>
+
+        {filteredPrompts.length > 0 ? (
+          <section className="pb-8 text-center">
+            <p className="mb-3 text-sm text-cyan-100/85">
+              Showing {visiblePrompts.length} of {filteredPrompts.length} prompts
+            </p>
+            {hasMorePrompts ? (
+              <button
+                type="button"
+                className="action-btn"
+                onClick={() =>
+                  setVisiblePromptCount((previous) => Math.min(previous + PROMPTS_PER_PAGE, filteredPrompts.length))
+                }
+              >
+                Load more prompts
+              </button>
+            ) : null}
+          </section>
+        ) : null}
 
         {filteredPrompts.length === 0 ? (
           <section
