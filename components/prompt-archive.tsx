@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { seedancePrompts, type PromptSource } from "@/data/seedance-prompts";
 
@@ -273,7 +274,17 @@ export function PromptArchive() {
   );
   const hasMorePrompts = visiblePromptCount < filteredPrompts.length;
 
-  const xCount = seedancePrompts.filter((entry) => entry.source === "X").length;
+  const latestPromptDateLabel = useMemo(() => {
+    let latestDate: string | null = null;
+
+    for (const entry of seedancePrompts) {
+      if (!latestDate || new Date(entry.createdAt).getTime() > new Date(latestDate).getTime()) {
+        latestDate = entry.createdAt;
+      }
+    }
+
+    return latestDate ? formatDate(latestDate) : "Unknown";
+  }, []);
 
   const copyPrompt = async (id: string, prompt: string) => {
     try {
@@ -292,27 +303,30 @@ export function PromptArchive() {
 
       <main className="mx-auto flex w-full max-w-7xl flex-col gap-8">
         <section className="panel animate-rise rounded-3xl border border-white/20 p-6 md:p-10">
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-            <div className="space-y-4">
-              <p className="tracking-hud text-xs uppercase text-cyan-200">Seedance 2.0 prompts</p>
-              <h1 className="display-title text-4xl leading-[0.9] text-white sm:text-5xl lg:text-7xl">
-                Seedance 2.0 Prompts Library
-              </h1>
-              <p className="max-w-2xl text-sm text-cyan-100/85 md:text-base">
-                A living wall of Seedance 2.0 prompts, source clips, and remix-ready text. Most entries are
-                traced back to X posts so you can quickly test and iterate.
-              </p>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="inline-flex items-center rounded-2xl border border-white/20 bg-white/5 p-2">
+                <Image
+                  src="/icon.svg"
+                  alt="Seedance Prompt Radar logo"
+                  width={36}
+                  height={36}
+                  className="h-9 w-9 rounded-lg"
+                  priority
+                />
+              </div>
+              <div className="min-w-0">
+                <h1 className="display-title text-2xl leading-tight text-white sm:text-3xl lg:text-4xl">
+                  Seedance 2.0 Prompts
+                </h1>
+              </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
-              <div className="stat-card">
-                <p className="text-xs uppercase text-cyan-100/80">Total prompts</p>
-                <p className="mt-2 text-3xl font-semibold text-white">{seedancePrompts.length}</p>
-              </div>
-              <div className="stat-card">
-                <p className="text-xs uppercase text-cyan-100/80">From X</p>
-                <p className="mt-2 text-3xl font-semibold text-white">{xCount}</p>
-              </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <p className="text-xs text-cyan-100/70">Last updated {latestPromptDateLabel}</p>
+              <a href="#prompt-catalog" className="action-btn inline-flex border-transparent bg-cyan-200 text-slate-950">
+                Browse prompts
+              </a>
             </div>
           </div>
         </section>
@@ -342,7 +356,11 @@ export function PromptArchive() {
           </section>
         ) : null}
 
-        <section className="panel animate-rise rounded-3xl border border-white/20 p-4 md:p-6" style={{ animationDelay: "100ms" }}>
+        <section
+          id="prompt-catalog"
+          className="panel animate-rise rounded-3xl border border-white/20 p-4 md:p-6"
+          style={{ animationDelay: "100ms" }}
+        >
           <div className="grid gap-4 md:grid-cols-[1.2fr_0.8fr] md:items-center">
             <label className="relative block">
               <span className="sr-only">Search prompts</span>
